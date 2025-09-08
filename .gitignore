@@ -31,7 +31,7 @@ wheels/
 .installed.cfg
 *.egg
 MANIFEST
-
+env.production
 # Virtual environments
 venv/
 env/
