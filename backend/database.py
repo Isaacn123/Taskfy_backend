@@ -24,7 +24,7 @@ load_dotenv()
 # Build DATABASE_URL from environment variables
 MYSQL_USER = os.getenv("MYSQL_USER", "taskify_user")
 MYSQL_PASSWORD = os.getenv("MYSQL_PASSWORD", "taskify_password")
-MYSQL_HOST = os.getenv("MYSQL_HOST", "db")
+MYSQL_HOST = os.getenv("MYSQL_HOST", "taskfy_db")
 MYSQL_PORT = os.getenv("MYSQL_PORT", "3306")
 MYSQL_DATABASE = os.getenv("MYSQL_DATABASE", "taskify_db")
 
