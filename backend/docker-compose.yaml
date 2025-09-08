@@ -72,7 +72,7 @@ services:
   # Adminer - Web-based database management tool
   adminer:
     image: adminer:latest
-    container_name: adminer_events
+    container_name: adminer_taskify
     restart: unless-stopped
     ports:
       - "8087:8080"
