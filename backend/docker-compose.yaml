@@ -12,7 +12,7 @@ services:
       - .:/app
       - ./database_.db:/app/database_.db
     env_file:
-      - ../env.production
+      - ../.env.production
     environment:
       - PYTHONPATH=/app
     networks:
