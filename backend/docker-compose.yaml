@@ -25,7 +25,7 @@ services:
       retries: 3
       start_period: 40s
     depends_on:
-      - mysql
+      - taskfy_db
 
   # OLD POSTGRESQL CONFIGURATION (COMMENTED OUT)
   # postgres:
@@ -45,29 +45,11 @@ services:
   #     retries: 3
 
   # NEW MYSQL CONFIGURATION
-  mysql:
+  taskfy_db:
     image: mysql:8.0
-    container_name: taskify-mysql
+    restart: always
     env_file:
       - ../.env.production
-    environment:
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-      - MYSQL_DATABASE=${MYSQL_DATABASE}
-      - MYSQL_USER=${MYSQL_USER}
-      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-    ports:
-      - "3306:3306"
-    volumes:
-      - mysql_data:/var/lib/mysql
-    networks:
-      - taskify-network
-    restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
-      start_period: 30s
 
   # Adminer - Web-based database management tool
   adminer:
@@ -77,7 +59,7 @@ services:
     ports:
       - "8087:8080"
     depends_on:
-      - mysql
+      - taskfy_db
     networks:
       - taskify-network
 
