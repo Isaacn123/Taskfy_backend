@@ -13,7 +13,7 @@ services:
       - .:/app
     working_dir: /app
     env_file:
-      - ../.env.production
+      - ../env.production
     
     environment:
       - PYTHONPATH=/app
@@ -50,7 +50,7 @@ services:
     container_name: taskfy-db
     restart: always
     env_file:
-      - ../.env.production
+      - ../env.production
     volumes:
       - mysql_data_taskfy:/var/lib/mysql
 

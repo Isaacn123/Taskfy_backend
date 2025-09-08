@@ -12,10 +12,10 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 class User(Base):
     __tablename__ = "users"
     id = _sql.Column(_sql.Integer,primary_key=True,index=True)
-    email = _sql.Column(_sql.String,unique=True,index=True)
-    name = _sql.Column(_sql.String)
-    hashed_password = _sql.Column(_sql.String)
-    role = _sql.Column(_sql.String, default="user")  # "user", "admin", "moderator"
+    email = _sql.Column(_sql.String(255),unique=True,index=True)
+    name = _sql.Column(_sql.String(255))
+    hashed_password = _sql.Column(_sql.String(255))
+    role = _sql.Column(_sql.String(50), default="user")  # "user", "admin", "moderator"
     date_created = _sql.Column(_sql.DateTime,default=_dt.utcnow)
    #  tasks = _sql.Column("Task", back_populates="owner")
     tasks = _orm.relationship("Task", back_populates="owner")
@@ -41,7 +41,7 @@ class User(Base):
 class Task(Base):
    __tablename__ = "tasks"
    id = _sql.Column(_sql.Integer,primary_key=True,index=True)
-   task_title = _sql.Column(_sql.String)
+   task_title = _sql.Column(_sql.String(500))
    is_completed = _sql.Column(_sql.Boolean,default=False)
    owner_id = _sql.Column(_sql.Integer,_sql.ForeignKey("users.id"))
    date_created = _sql.Column(_sql.DateTime,default=_dt.utcnow)
