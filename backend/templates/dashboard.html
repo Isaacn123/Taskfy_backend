@@ -1,0 +1,213 @@
+{% extends "layout.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block main %}
+<div class="container mt-4">
+    <h1>Taskify Dashboard</h1>
+    <p>Welcome to your task management dashboard!</p>
+    
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Quick Actions</h5>
+                </div>
+                <div class="card-body">
+                    <a href="/api/tasks" class="btn btn-primary">View My Tasks</a>
+                    <a href="/api/user/me" class="btn btn-secondary">My Profile</a>
+                    <a href="/admin/simple" class="btn btn-danger">Admin Dashboard</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>API Endpoints</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled">
+                        <li><code>POST /api/user</code> - Create user</li>
+                        <li><code>POST /api/token</code> - Login</li>
+                        <li><code>GET /api/tasks</code> - Get my tasks</li>
+                        <li><code>POST /api/user/tasks</code> - Create task</li>
+                        <li><code>GET /admin/dashboard</code> - Admin dashboard</li>
+                        <li><code>GET /admin/users</code> - All users</li>
+                        <li><code>GET /admin/tasks</code> - All tasks</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Info Section -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Authentication</h5>
+                </div>
+                <div class="card-body">
+                    <div id="auth-status">
+                        <p class="text-muted">Please log in to access your tasks</p>
+                        <button class="btn btn-primary" onclick="showLoginForm()">Login</button>
+                        <button class="btn btn-secondary" onclick="showRegisterForm()">Register</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Login Modal -->
+<div class="modal fade" id="loginModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Login</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="loginForm">
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Register Modal -->
+<div class="modal fade" id="registerModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Register</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="registerForm">
+                    <div class="mb-3">
+                        <label for="regName" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="regName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="regEmail" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="regEmail" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="regPassword" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="regPassword" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Register</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function showLoginForm() {
+    new bootstrap.Modal(document.getElementById('loginModal')).show();
+}
+
+function showRegisterForm() {
+    new bootstrap.Modal(document.getElementById('registerModal')).show();
+}
+
+// Handle login form submission
+document.getElementById('loginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const formData = new FormData();
+    formData.append('username', document.getElementById('email').value);
+    formData.append('password', document.getElementById('password').value);
+    
+    try {
+        const response = await fetch('/api/token', {
+            method: 'POST',
+            body: formData
+        });
+        
+        if (response.ok) {
+            const data = await response.json();
+            localStorage.setItem('access_token', data.access_token);
+            updateAuthStatus();
+            bootstrap.Modal.getInstance(document.getElementById('loginModal')).hide();
+        } else {
+            alert('Login failed. Please check your credentials.');
+        }
+    } catch (error) {
+        console.error('Login error:', error);
+        alert('Login error');
+    }
+});
+
+// Handle register form submission
+document.getElementById('registerForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const userData = {
+        name: document.getElementById('regName').value,
+        email: document.getElementById('regEmail').value,
+        password: document.getElementById('regPassword').value
+    };
+    
+    try {
+        const response = await fetch('/api/user', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(userData)
+        });
+        
+        if (response.ok) {
+            const data = await response.json();
+            localStorage.setItem('access_token', data.access_token);
+            updateAuthStatus();
+            bootstrap.Modal.getInstance(document.getElementById('registerModal')).hide();
+            alert('Registration successful!');
+        } else {
+            const error = await response.json();
+            alert(`Registration failed: ${error.detail}`);
+        }
+    } catch (error) {
+        console.error('Registration error:', error);
+        alert('Registration error');
+    }
+});
+
+function updateAuthStatus() {
+    const token = localStorage.getItem('access_token');
+    if (token) {
+        document.getElementById('auth-status').innerHTML = `
+            <p class="text-success">You are logged in!</p>
+            <button class="btn btn-danger" onclick="logout()">Logout</button>
+        `;
+    } else {
+        document.getElementById('auth-status').innerHTML = `
+            <p class="text-muted">Please log in to access your tasks</p>
+            <button class="btn btn-primary" onclick="showLoginForm()">Login</button>
+            <button class="btn btn-secondary" onclick="showRegisterForm()">Register</button>
+        `;
+    }
+}
+
+function logout() {
+    localStorage.removeItem('access_token');
+    updateAuthStatus();
+}
+
+// Check auth status on page load
+updateAuthStatus();
+</script>
+{% endblock %}

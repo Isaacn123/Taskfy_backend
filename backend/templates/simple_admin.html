@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+
+{% block title %}Simple Admin{% endblock %}
+
+{% block main %}
+<div class="container mt-4">
+    <h1>Simple Admin Dashboard</h1>
+    
+    <!-- Statistics -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <h5>Total Users</h5>
+                    <h2>{{ stats.total_users }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <h5>Total Tasks</h5>
+                    <h2>{{ stats.total_tasks }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-warning text-white">
+                <div class="card-body">
+                    <h5>Completed Tasks</h5>
+                    <h2>{{ stats.completed_tasks }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-info text-white">
+                <div class="card-body">
+                    <h5>Completion Rate</h5>
+                    <h2>{{ "%.1f"|format(stats.completion_rate) }}%</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Simple Links -->
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Quick Actions</h5>
+                </div>
+                <div class="card-body">
+                    <a href="/admin/simple/users" class="btn btn-primary">View All Users</a>
+                    <a href="/admin/simple/tasks" class="btn btn-success">View All Tasks</a>
+                    <a href="/" class="btn btn-secondary">Back to Main</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

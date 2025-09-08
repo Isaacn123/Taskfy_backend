@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+
+{% block title %}All Tasks{% endblock %}
+
+{% block main %}
+<div class="container mt-4">
+    <h1>All Tasks</h1>
+    <a href="/admin/simple" class="btn btn-secondary mb-3">← Back to Admin Dashboard</a>
+    
+    <div class="card">
+        <div class="card-header">
+            <h5>Tasks List</h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Title</th>
+                            <th>Owner ID</th>
+                            <th>Status</th>
+                            <th>Date Created</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for task in tasks %}
+                        <tr>
+                            <td>{{ task.id }}</td>
+                            <td>{{ task.task_title }}</td>
+                            <td>{{ task.owner_id }}</td>
+                            <td>
+                                <span class="badge bg-{{ 'success' if task.is_completed else 'warning' }}">
+                                    {{ 'Completed' if task.is_completed else 'Pending' }}
+                                </span>
+                            </td>
+                            <td>{{ task.date_created if task.date_created else 'N/A' }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

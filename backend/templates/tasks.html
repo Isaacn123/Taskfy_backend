@@ -1,0 +1,50 @@
+{% extends 'layout.html' %}
+
+{% block title %}Tasks{% endblock %}
+
+{% block main %} 
+
+{% extends "layout.html" %}
+
+{% block title %}
+Tasks  History
+{% endblock%}
+
+
+{% block main %}
+
+<h2>Tasks History</h2>
+
+<table class="table table-light table-striped-columns">
+    <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Synbol</th>
+          <th scope="col">Date</th>
+          <th scope="col">Shares</th>
+          <th scope="col">Status</th>
+          <th scope="col">Price</th>
+          <th scope="col">Cost</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for task in tasks %}
+
+         <tr>
+            <th scope="row">{{history.id}}</th>
+            <td>{{history.symbol}}</td>
+            <td>{{history.date}}</td>
+            <td>{{history.number_of_shares}}</td>
+            <td><strong>{{history.status}}</strong></td>
+            <td>{{history.price | usd}}</td>
+            <td>{{history.cost | usd}}</td>
+          </tr>
+
+        {% endfor %}
+
+      </tbody>
+  </table>
+
+
+
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+
+{% block title %}All Users{% endblock %}
+
+{% block main %}
+<div class="container mt-4">
+    <h1>All Users</h1>
+    <a href="/admin/simple" class="btn btn-secondary mb-3">← Back to Admin Dashboard</a>
+    
+    <div class="card">
+        <div class="card-header">
+            <h5>Users List</h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Date Created</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                        <tr>
+                            <td>{{ user.id }}</td>
+                            <td>{{ user.name }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>
+                                <span class="badge bg-{{ 'danger' if user.role == 'admin' else 'secondary' }}">
+                                    {{ user.role }}
+                                </span>
+                            </td>
+                            <td>{{ user.date_created if user.date_created else 'N/A' }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

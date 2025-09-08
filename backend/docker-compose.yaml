@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  backend:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: taskify-backend
+    ports:
+      - "8000:8002"
+    volumes:
+      - .:/app
+      - ./database_.db:/app/database_.db
+    env_file:
+      - ../env.production
+    environment:
+      - PYTHONPATH=/app
+    networks:
+      - taskify-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "python - <<'PY'\nimport sys, urllib.request\ntry:\n    urllib.request.urlopen('http://localhost:8002/health', timeout=5)\n    sys.exit(0)\nexcept Exception:\n    sys.exit(1)\nPY"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    depends_on: []
+
+  # Optional: Add a proper database service for production
+  # postgres:
+  #   image: postgres:15
+  #   container_name: taskify-db
+  #   env_file:
+  #     - .env.db
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  #   networks:
+  #     - taskify-network
+  #   restart: unless-stopped
+  #   healthcheck:
+  #     test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+  #     interval: 30s
+  #     timeout: 10s
+  #     retries: 3
+
+networks:
+  taskify-network:
+    driver: bridge
+
+# volumes:
+#   postgres_data:
