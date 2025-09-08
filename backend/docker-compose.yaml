@@ -5,7 +5,7 @@ services:
     build: 
       context: .
       dockerfile: Dockerfile
-    container_name: taskify-backend
+    container_name: taskfy-backend
     ports:
       - "8000:8003"
     # command: uvicorn main:app --host 0.0.0.0 --port 8003 --reload
@@ -47,6 +47,7 @@ services:
   # NEW MYSQL CONFIGURATION
   taskfy_db:
     image: mysql:8.0
+    container_name: taskfy-db
     restart: always
     env_file:
       - ../.env.production

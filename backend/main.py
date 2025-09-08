@@ -48,8 +48,23 @@ template.env.globals.update({
 @app.on_event("startup")
 async def startup():
     # This will run only once when the app starts
-    create_database()
-    logging.info("Database initialized successfully.")
+    import time
+    max_retries = 30
+    retry_count = 0
+    
+    while retry_count < max_retries:
+        try:
+            create_database()
+            logging.info("Database initialized successfully.")
+            break
+        except Exception as e:
+            retry_count += 1
+            logging.warning(f"Database connection failed (attempt {retry_count}/{max_retries}): {e}")
+            if retry_count < max_retries:
+                time.sleep(2)
+            else:
+                logging.error("Failed to connect to database after maximum retries")
+                raise
 
 @app.get('/')
 def read_root(request: Request):
