@@ -49,7 +49,7 @@ services:
     image: mysql:8.0
     container_name: taskify-mysql
     env_file:
-      - ../env.production
+      - ../.env.production
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - MYSQL_DATABASE=${MYSQL_DATABASE}
