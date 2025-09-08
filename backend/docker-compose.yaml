@@ -10,7 +10,7 @@ services:
       - "8000:8002"
     volumes:
       - .:/app
-      - ./database_.db:/app/database_.db
+    working_dir: /app
     env_file:
       - ../.env.production
     environment:
@@ -24,9 +24,10 @@ services:
       timeout: 10s
       retries: 3
       start_period: 40s
-    depends_on: []
+    depends_on:
+      - mysql
 
-  # Optional: Add a proper database service for production
+  # OLD POSTGRESQL CONFIGURATION (COMMENTED OUT)
   # postgres:
   #   image: postgres:15
   #   container_name: taskify-db
@@ -43,9 +44,48 @@ services:
   #     timeout: 10s
   #     retries: 3
 
+  # NEW MYSQL CONFIGURATION
+  mysql:
+    image: mysql:8.0
+    container_name: taskify-mysql
+    env_file:
+      - ../env.production
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - taskify-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+  # Adminer - Web-based database management tool
+  adminer:
+    image: adminer:latest
+    container_name: adminer_events
+    restart: unless-stopped
+    ports:
+      - "8087:8080"
+    depends_on:
+      - mysql
+    networks:
+      - taskify-network
+
 networks:
   taskify-network:
     driver: bridge
 
-# volumes:
-#   postgres_data:
+volumes:
+  mysql_data:
+  # OLD POSTGRESQL VOLUME (COMMENTED OUT)
+  # postgres_data:

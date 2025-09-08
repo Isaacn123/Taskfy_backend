@@ -6,17 +6,29 @@ from dotenv import load_dotenv
 # import models as _mo
 #DATABASE_URL = "postgresql://USER:PASSWORD@localhost:5432/DATABASE_NAME"
 
-
+# OLD SQLITE CONFIGURATION (COMMENTED OUT)
 # DATABASE_URL = "sqlite:///./database.db"
 # DATABASE_URL = "postgresql://user:password@localhost:5432/taskify_db"
 # DATABASE_URL = os.getenv("DATABASE_URL","postgresql://user:password@localhost:5432/database.db")
-load_dotenv()
-DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./database_.db")
+# load_dotenv()
+# DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./database_.db")
 # engine = _sql.create_engine(DATABASE_URL,connect_args={"check_same_thread":False})
-if DATABASE_URL.startswith("sqlite"):
-    engine = _sql.create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
-else:
-    engine = _sql.create_engine(DATABASE_URL)  # for postgress we dont need the string "check_same_thread" its for sqlite
+# if DATABASE_URL.startswith("sqlite"):
+#     engine = _sql.create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
+# else:
+#     engine = _sql.create_engine(DATABASE_URL)  # for postgress we dont need the string "check_same_thread" its for sqlite
+
+# NEW MYSQL CONFIGURATION
+load_dotenv()
+DATABASE_URL = os.getenv("DATABASE_URL", "mysql+pymysql://taskify_user:taskify_password@mysql:3306/taskify_db")
+
+# Create engine with MySQL configuration
+engine = _sql.create_engine(
+    DATABASE_URL,
+    pool_pre_ping=True,
+    pool_recycle=300,
+    echo=False  # Set to True for SQL query logging
+)
 SessionLocal = _orm.sessionmaker(autocommit=False,autoflush=False,bind=engine)
 Base = _declarative.declarative_base()
 

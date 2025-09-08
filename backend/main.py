@@ -238,6 +238,43 @@ async def simple_admin_users(request: Request, db: _orm.Session = Depends(get_db
         "users": users
     })
 
+# Health Check Endpoint
+@app.get("/health")
+async def health_check():
+    """Health check endpoint for Docker"""
+    return {"status": "healthy", "message": "Taskify API is running"}
+
+# Additional Admin Management Endpoints
+@app.post("/admin/users", response_model=User)
+async def admin_create_user(
+    user_create: UserCreate,
+    admin: User = Depends(get_current_admin_user),
+    db: _orm.Session = Depends(get_db)
+):
+    """Create new user (admin only)"""
+    return create_user_(user_create, db)
+
+@app.get("/admin/users/{user_id}/tasks", response_model=List[Task])
+async def admin_get_user_tasks(
+    user_id: int,
+    admin: User = Depends(get_current_admin_user),
+    db: _orm.Session = Depends(get_db)
+):
+    """Get all tasks for a specific user (admin only)"""
+    user = get_user_by_id(user_id, db)
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    return get_user_task(user, db)
+
+@app.post("/admin/tasks", response_model=Task)
+async def admin_create_task(
+    task_create: TaskCreate,
+    admin: User = Depends(get_current_admin_user),
+    db: _orm.Session = Depends(get_db)
+):
+    """Create new task (admin only)"""
+    return create_task(task_create, db)
+
 # Simple Admin Dashboard
 @app.get("/admin/simple")
 async def simple_admin_dashboard(request: Request, db: _orm.Session = Depends(get_db)):
