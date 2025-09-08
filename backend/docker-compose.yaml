@@ -8,15 +8,15 @@ services:
     container_name: taskify-backend
     ports:
       - "8000:8003"
+    # command: uvicorn main:app --host 0.0.0.0 --port 8003 --reload
     volumes:
       - .:/app
     working_dir: /app
     env_file:
       - ../.env.production
+    
     environment:
       - PYTHONPATH=/app
-    networks:
-      - taskify-network
     restart: unless-stopped
     healthcheck:
       test: ["CMD-SHELL", "python - <<'PY'\nimport sys, urllib.request\ntry:\n    urllib.request.urlopen('http://localhost:8003/health', timeout=5)\n    sys.exit(0)\nexcept Exception:\n    sys.exit(1)\nPY"]
@@ -50,22 +50,18 @@ services:
     restart: always
     env_file:
       - ../.env.production
+    volumes:
+      - mysql_data_taskfy:/var/lib/mysql
 
   # Adminer - Web-based database management tool
   adminer:
     image: adminer:latest
-    container_name: adminer_taskify
+    container_name: adminer_taskfy
     restart: unless-stopped
     ports:
       - "8087:8080"
     depends_on:
       - taskfy_db
-    networks:
-      - taskify-network
-
-networks:
-  taskify-network:
-    driver: bridge
 
 volumes:
   mysql_data_taskfy:
