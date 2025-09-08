@@ -13,7 +13,7 @@ services:
       - .:/app
     working_dir: /app
     env_file:
-      - ../env.production
+      - ../.env.production
     
     environment:
       - PYTHONPATH=/app
