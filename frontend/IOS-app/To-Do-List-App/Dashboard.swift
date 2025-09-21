@@ -100,7 +100,7 @@ struct Dashboard: View {
                         
                         if let user = userViewInfo.user{
                             Text("\(user.name)")
-                            Text("@\(user.email)")
+                            Text("\(user.email)")
                                 .font(.footnote)
                                 .foregroundColor(Color(red: 244/255, green: 94/255, blue: 91/255))
                         } else {

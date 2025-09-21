@@ -138,13 +138,15 @@ def create_user_Task(db:_orm.Session,user_id:int, task:TaskCreate):
     db.add(user_task)
     db.commit()
     db.refresh(user_task)
-    return Task.model_validate(user_task)
+    # return Task.model_validate(user_task)
+    return user_task
 
 
 def get_user_task(user:User,db:_orm.Session):
     tasks = db.query(Task).filter(Task.owner_id == user.id).all()
-    return list(map(Task.from_orm,tasks))
+    # return list(map(Task.from_orm,tasks))
     # return [task.model_dump for task in tasks]
+    return tasks
 
 def updateTask(
         user:User, 
