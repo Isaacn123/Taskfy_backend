@@ -131,7 +131,8 @@ def create_task(user:User, db:_orm.Session, task:TaskCreate):
     db.add(task)
     db.commit()
     db.refresh(task)
-    return Task.model_validate(task)
+    # return Task.model_validate(task)
+    return task
 
 def create_user_Task(db:_orm.Session,user_id:int, task:TaskCreate):
     user_task =  Task(**task.model_dump(),owner_id=user_id)
