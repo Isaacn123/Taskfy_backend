@@ -11,7 +11,7 @@ struct NetworkManager{
     static let shared = NetworkManager()
 //    let baseURL = "http://127.0.0.1:8000/"
 //    let baseURL = "https://45.56.120.65:8000/"
-    let baseURL = "https://45.56.120.65/"
+    let baseURL = "https://tasky.duckdns.org/app2/"
 //    @Published var user: User?
     
     private init() {}

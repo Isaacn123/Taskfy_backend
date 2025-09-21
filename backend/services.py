@@ -120,7 +120,8 @@ def get_current_user(db:_orm.Session = Depends(get_db),token:str=Depends(oauth2s
             detail="Invalid email or password"
         )
 
-    return User.model_validate(user)
+    # return User.model_validate(user)
+    return user.to_dict()
 
 def create_task(user:User, db:_orm.Session, task:TaskCreate):
     task_data = task.model_dump()

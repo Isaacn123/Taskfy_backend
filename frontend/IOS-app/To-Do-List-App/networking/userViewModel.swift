@@ -14,7 +14,7 @@ class UserDetailModel: ObservableObject {
     @Published var errormessage:String?
     
 //    let baseURL = "http://127.0.0.1:8000/"
-    let baseURL = "https://45.56.120.65/app2/"
+    let baseURL = "https://tasky.duckdns.org/app2/"
     
     
     func fetchUser(token:String){
@@ -50,6 +50,7 @@ class UserDetailModel: ObservableObject {
                       }
                   } catch {
                       print("Error decoding user: \(error.localizedDescription)")
+                      print("user \(data)")
                   }
               }
               
