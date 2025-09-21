@@ -111,7 +111,7 @@ def get_user(user:User = Depends(get_current_user)):
 
 
 @app.post('/api/user/tasks', response_model=Task)
-def create_task(task:TaskCreate,user:User =Depends(get_current_user), db:_orm.Session = Depends(get_db)):
+def create_user_task_endpoint(task:TaskCreate,user:User =Depends(get_current_user), db:_orm.Session = Depends(get_db)):
     return create_task(user=user,db=db,task=task)
 
 @app.post("/users/user/{user_id}/tasks", response_model=Task)
