@@ -121,7 +121,7 @@ def get_current_user(db:_orm.Session = Depends(get_db),token:str=Depends(oauth2s
         )
 
     # return User.model_validate(user)
-    return user.to_dict()
+    return user
 
 def create_task(user:User, db:_orm.Session, task:TaskCreate):
     task_data = task.model_dump()
