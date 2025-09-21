@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import IQKeyboardManagerSwift
 
 struct login: View {
     @EnvironmentObject var authManager:AuthManager
@@ -57,10 +56,19 @@ struct LoginView: View {
                     
                     Form{
                         Section(){
-                            TextField("Enter your email",text: $username).background(Color.white.opacity(0.8)).autocapitalization(.none)
+                            TextField("Enter your email",text: $username)
+                                .background(Color.white.opacity(0.8))
+                                .autocapitalization(.none)
+                                .keyboardType(.emailAddress)
+                                .submitLabel(.next)
                         }
                         Section{
-                            SecureField("Enter Password",text: $password).autocapitalization(.none)
+                            SecureField("Enter Password",text: $password)
+                                .autocapitalization(.none)
+                                .submitLabel(.done)
+                                .onSubmit {
+                                    loginUser()
+                                }
                         }
                         
                     }.background(Color.clear).scrollContentBackground(.hidden)
@@ -92,16 +100,15 @@ struct LoginView: View {
                     
                 }.background(Color.clear)
             }
+            .onTapGesture {
+                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+            }
             
         }.alert(isPresented: $showALert){
             Alert(title: Text(alertMessage))
         }.navigationDestination(isPresented: $navigateToLogin, destination: {
             Dashboard(viewModel: TaskViewModel()).navigationBarBackButtonHidden(true)
-        }).onAppear{
-            IQKeyboardManager.shared.enable = true
-        }.onDisappear{
-            IQKeyboardManager.shared.enable = false
-        }
+        })
     }
     
     private  func loginUser(){

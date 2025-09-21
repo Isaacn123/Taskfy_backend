@@ -26,7 +26,7 @@ struct ContentView: View {
                     Text("Welcome to our,")
                     VStack(spacing:10){
                         Text("OUR REMINDER").font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
-                        Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Interdum dictum tempus, interdum at dignissim metus. Ultricies sed nunc.").multilineTextAlignment(.center).padding()
+                        Text("Organize your day with ease. Manage tasks, set reminders, and stay focused. Productivity starts here simple, smart, and always on time.").multilineTextAlignment(.center).padding()
                     }
                     Spacer()
                     VStack{

@@ -22,11 +22,11 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Build DATABASE_URL from environment variables
-MYSQL_USER = os.getenv("MYSQL_USER", "taskify_user")
-MYSQL_PASSWORD = os.getenv("MYSQL_PASSWORD", "taskify_password")
+MYSQL_USER = os.getenv("MYSQL_USER", "admin")
+MYSQL_PASSWORD = os.getenv("MYSQL_PASSWORD", "admin123")
 MYSQL_HOST = os.getenv("MYSQL_HOST", "taskfy-db")
 MYSQL_PORT = os.getenv("MYSQL_PORT", "3306")
-MYSQL_DATABASE = os.getenv("MYSQL_DATABASE", "taskify_db")
+MYSQL_DATABASE = os.getenv("MYSQL_DATABASE", "task_db")
 
 # Use environment variable or build from components
 DATABASE_URL = os.getenv("DATABASE_URL") or f"mysql+pymysql://{MYSQL_USER}:{MYSQL_PASSWORD}@{MYSQL_HOST}:{MYSQL_PORT}/{MYSQL_DATABASE}"

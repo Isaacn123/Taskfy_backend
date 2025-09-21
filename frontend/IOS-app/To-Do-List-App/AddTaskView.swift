@@ -31,6 +31,13 @@ struct AddTaskView: View {
                 TextField("Task Title", text: $taskTitle)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .padding()
+                    .submitLabel(.done)
+                    .onSubmit {
+                        createTask()
+                        presentationMode.wrappedValue.dismiss()
+                    }
+                    .disableAutocorrection(true)
+                    .autocapitalization(.words)
                 Button(action: {
 //                title: taskTitle, isCompleted: false,
 //                    let newTask = Task(title: taskTitle, isCompleted: false, ownerId: userViewInfo.user?.id, dateCreated: user)
@@ -44,7 +51,11 @@ struct AddTaskView: View {
                         .foregroundColor(.white)
                         .cornerRadius(15)
                 })
-            }.navigationTitle("Add Task")
+            }
+            .navigationTitle("Add Task")
+            .onTapGesture {
+                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+            }
         }.alert(isPresented: $navigateToLogin){
             Alert(title: Text(alertMessage))
         }

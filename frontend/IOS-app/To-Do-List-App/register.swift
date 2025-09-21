@@ -49,12 +49,21 @@ struct register: View {
                                     Form{
                                         Section{
                                             TextField("Enter full name", text:$fullName)
+                                                .submitLabel(.next)
                                         }
                                         Section{
-                                            TextField("Enter your email", text:$email).autocapitalization(.none)
+                                            TextField("Enter your email", text:$email)
+                                                .autocapitalization(.none)
+                                                .keyboardType(.emailAddress)
+                                                .submitLabel(.next)
                                         }
                                         Section{
-                                            SecureField("Enter password", text:$password).autocapitalization(.none)
+                                            SecureField("Enter password", text:$password)
+                                                .autocapitalization(.none)
+                                                .submitLabel(.done)
+                                                .onSubmit {
+                                                    registerUser()
+                                                }
                                         }
 //                                        Section{
 //                                            TextField("Comfirm Password", text:$comfirmPassword)
@@ -85,6 +94,9 @@ struct register: View {
                                 //                    }
                                 
                                 NavigationLink(destination:login().navigationBarBackButtonHidden(true)){ Text("Already have an account ? Sign In").foregroundColor(.white)}
+                            }
+                            .onTapGesture {
+                                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                             }
                             
                         }

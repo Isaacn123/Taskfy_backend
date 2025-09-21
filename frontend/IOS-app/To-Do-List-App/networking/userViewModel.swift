@@ -13,7 +13,8 @@ class UserDetailModel: ObservableObject {
     @Published var user:User?
     @Published var errormessage:String?
     
-    let baseURL = "http://127.0.0.1:8000/"
+//    let baseURL = "http://127.0.0.1:8000/"
+    let baseURL = "https://45.56.120.65/"
     
     
     func fetchUser(token:String){
